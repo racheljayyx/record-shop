@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum Format {
     CD("cd"),
-    DVD("dvd"),
+    VINYL("vinyl"),
     DIGITAL("digital");
 
     final String name;
