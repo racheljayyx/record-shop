@@ -4,15 +4,22 @@ import lombok.Getter;
 
 @Getter
 public enum Format {
-    CD("cd", 1L),
-    DVD("dvd", 2L),
-    DIGITAL("digital", 3L);
+    CD("cd"),
+    DVD("dvd"),
+    DIGITAL("digital");
 
-    final String format;
-    final Long id;
+    final String name;
 
-    Format(final String format, final Long id) {
-        this.format = format;
-        this.id = id;
+    Format(final String name) {
+        this.name = name;
+    }
+
+    public static Format getFormatFromName(String name) {
+        for (Format format : Format.values()) {
+            if(format.getName().equals(name)) {
+                return format;
+            }
+        }
+        throw new IllegalArgumentException("Invalid fromat name: " + name);
     }
 }
