@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 
@@ -62,6 +63,27 @@ public class RecordShopControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].artist").value("London Philharmonic Orchestra"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[2].id").value(3))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[2].quantity").value(19));
+    }
+
+    @Test
+    public void testGetRecordByIdReturnsRecordWhenExists() throws Exception {
+
+        Record record = new Record(1L, "The Great Commission", "Dunsin Oyekan", Genre.GOSPEL, Format.DIGITAL, 5, 100);
+
+        Optional<Record> optionalRecord = Optional.of(record);
+
+        when(mockRecordShopServiceImpl.getRecordById(1L)).thenReturn(optionalRecord);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.get("/api/v1/recordshop/1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("The Great Commission"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.artist").value("Dunsin Oyekan"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value("GOSPEL"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.format").value("DIGITAL"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.quantity").value(5))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.priceInPence").value(100));
     }
 
 }

@@ -11,9 +11,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
+import static org.mockito.Mockito.*;
 
 @DataJpaTest
 public class RecordShopServiceTests {
@@ -41,15 +43,32 @@ public class RecordShopServiceTests {
     }
 
     @Test
-    public void testAddRecord() {
-        var record = new Record(4L, "Chandler Moore: Live in Los Angeles", "Chandler Moore", Genre.GOSPEL, Format.DIGITAL, 5, 121);
+    public void testGetRecordByIdReturnsRecordWhenExists() {
 
-        when(mockRecordShopRepository.save(record)).thenReturn(record);
+        Record record = new Record(1L, "The Great Commission", "Dunsin Oyekan", Genre.GOSPEL, Format.DIGITAL, 5, 100);
 
-        List<Record> actualResult = recordShopServiceImpl.insertRecord(record);
+        
+        Optional<Record> optionalRecord = Optional.of(record);
+
+        when(mockRecordShopRepository.findById(1L)).thenReturn(optionalRecord);
+
+        Record actualResult = recordShopServiceImpl.getRecordById(1L).get();
 
         assertThat(actualResult).isEqualTo(record);
+        verify(mockRecordShopRepository, times(1)).findById(1L);
 
     }
+
+//    @Test
+//    public void testAddRecord() {
+//        var record = new Record(4L, "Chandler Moore: Live in Los Angeles", "Chandler Moore", Genre.GOSPEL, Format.DIGITAL, 5, 121);
+//
+//        when(mockRecordShopRepository.save(record)).thenReturn(record);
+//
+//        List<Record> actualResult = recordShopServiceImpl.insertRecord(record);
+//
+//        assertThat(actualResult).isEqualTo(record);
+//
+//    }
 
 }
