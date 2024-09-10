@@ -54,7 +54,7 @@ public class RecordShopControllerTest {
         when(mockRecordShopServiceImpl.getAllRecords()).thenReturn(records);
 
         this.mockMvcController.perform(
-                MockMvcRequestBuilders.get("/api/v1/recordshop/records"))
+                MockMvcRequestBuilders.get("/api/v1/recordshop"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("The Great Commission"))
