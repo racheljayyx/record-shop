@@ -65,7 +65,7 @@ public class RecordShopServiceTests {
 
         when(mockRecordShopRepository.save(record)).thenReturn(record);
 
-        List<Record> actualResult = recordShopServiceImpl.insertRecord(record);
+        Record actualResult = recordShopServiceImpl.insertRecord(record);
 
         assertThat(actualResult).isEqualTo(record);
 
