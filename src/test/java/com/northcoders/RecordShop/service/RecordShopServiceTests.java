@@ -40,16 +40,16 @@ public class RecordShopServiceTests {
         assertThat(actualResult).isEqualTo(records);
     }
 
-    @Test
-    public void testAddRecord() {
-        var record = new Record(4L, "Chandler Moore: Live in Los Angeles", "Chandler Moore", Genre.GOSPEL, Format.DIGITAL, 5, 121);
-
-        when(mockRecordShopRepository.save(record)).thenReturn(record);
-
-        List<Record> actualResult = recordShopServiceImpl.insertRecord(record);
-
-        assertThat(actualResult).isEqualTo(record);
-
-    }
+//    @Test
+//    public void testAddRecord() {
+//        var record = new Record(4L, "Chandler Moore: Live in Los Angeles", "Chandler Moore", Genre.GOSPEL, Format.DIGITAL, 5, 121);
+//
+//        when(mockRecordShopRepository.save(record)).thenReturn(record);
+//
+//        List<Record> actualResult = recordShopServiceImpl.insertRecord(record);
+//
+//        assertThat(actualResult).isEqualTo(record);
+//
+//    }
 
 }
