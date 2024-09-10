@@ -52,7 +52,7 @@ public class RecordShopServiceTests {
 
         when(mockRecordShopRepository.findById(1L)).thenReturn(optionalRecord);
 
-        Record actualResult = recordShopServiceImpl.getRecordById(1L);
+        Record actualResult = recordShopServiceImpl.getRecordById(1L).get();
 
         assertThat(actualResult).isEqualTo(record);
         verify(mockRecordShopRepository, times(1)).findById(1L);
