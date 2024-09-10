@@ -11,9 +11,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
+import static org.mockito.Mockito.*;
 
 @DataJpaTest
 public class RecordShopServiceTests {
@@ -38,6 +40,23 @@ public class RecordShopServiceTests {
 
         assertThat(actualResult).hasSize(3);
         assertThat(actualResult).isEqualTo(records);
+    }
+
+    @Test
+    public void testGetRecordByIdReturnsRecordWhenExists() {
+
+        Record record = new Record(1L, "The Great Commission", "Dunsin Oyekan", Genre.GOSPEL, Format.DIGITAL, 5, 100);
+
+        
+        Optional<Record> optionalRecord = Optional.of(record);
+
+        when(mockRecordShopRepository.findById(1L)).thenReturn(optionalRecord);
+
+        Record actualResult = recordShopServiceImpl.getRecordById(1L);
+
+        assertThat(actualResult).isEqualTo(record);
+        verify(mockRecordShopRepository, times(1)).findById(1L);
+
     }
 
 //    @Test
