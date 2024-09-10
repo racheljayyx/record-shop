@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -84,6 +85,28 @@ public class RecordShopControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.format").value("DIGITAL"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.quantity").value(5))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.priceInPence").value(100));
+    }
+
+    @Test
+    public void testPostMappingInsertBook() throws Exception {
+        Record record = new Record(1L, "The Great Commission", "Dunsin Oyekan", Genre.GOSPEL, Format.DIGITAL, 5, 100);
+
+        when(mockRecordShopServiceImpl.insertRecord(record)).thenReturn(record);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.post("/api/v1/recordshop/")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(record)))
+                                .andExpect(MockMvcResultMatchers.status().isCreated())
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("The Great Commission"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.artist").value("Dunsin Oyekan"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value("GOSPEL"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.format").value("DIGITAL"))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.quantity").value(5))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.priceInPence").value(100));
+
+
     }
 
 }
