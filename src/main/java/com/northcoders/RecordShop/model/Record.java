@@ -20,13 +20,11 @@ public class Record {
     @GeneratedValue()
     private Long id;
 
-
     @Column
     private String name;
 
     @Column
-    @OneToMany(mappedBy = "record")
-    private List<Song> songs = new ArrayList<>();
+    private String artist;
 
     @Column
     private Genre genre;
