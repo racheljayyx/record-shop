@@ -27,9 +27,11 @@ public class Record {
     private String artist;
 
     @Column
+    @Convert(converter = GenreConverter.class)
     private Genre genre;
 
     @Column
+    @Convert(converter = FormatConverter.class)
     private Format format;
 
     @Column
