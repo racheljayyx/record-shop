@@ -36,4 +36,11 @@ public class RecordShopController {
         httpHeaders.add("record", "/api/v1/recordshop" + newRecord.getId().toString());
         return new ResponseEntity<>(newRecord, httpHeaders,HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteRecordById(@PathVariable("id") long id) {
+        recordShopService.deleteRecordById(id);
+        return new ResponseEntity<>("Record with id: " + id + " has been deleted", HttpStatus.OK);
+    }
+
 }
