@@ -9,5 +9,5 @@ public interface RecordShopService {
     List<Record> getAllRecords();
     Optional<Record> getRecordById(Long id);
     Record insertRecord(Record record);
-
+    void deleteRecordById(Long id);
 }
