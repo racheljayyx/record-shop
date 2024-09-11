@@ -109,4 +109,19 @@ public class RecordShopControllerTest {
         verify(mockRecordShopServiceImpl, times(1)).insertRecord(record);
     }
 
+    @Test
+    public void testDeleteMappingDeleteByRecordId() throws Exception {
+        Record record = new Record(1L, "The Great Commission", "Dunsin Oyekan", Genre.GOSPEL, Format.DIGITAL, 5, 100);
+
+        doNothing().when(mockRecordShopServiceImpl).deleteRecordById(1L);
+
+        this.mockMvcController.perform(
+                MockMvcRequestBuilders.delete("/api/v1/recordshop/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Record with id: 1 has been deleted"));
+
+        verify(mockRecordShopServiceImpl, times(1)).deleteRecordById(1L);
+    }
+
 }
