@@ -71,4 +71,17 @@ public class RecordShopServiceTests {
 
     }
 
+    @Test
+    public void testDeleteRecordByIdDeletesRecordWhenExists() {
+        Record record = new Record(1L, "The Great Commission", "Dunsin Oyekan", Genre.GOSPEL, Format.DIGITAL, 5, 100);
+
+        Optional<Record> optionalRecord = Optional.of(record);
+
+        when(mockRecordShopRepository.findById(1L)).thenReturn(optionalRecord);
+
+        recordShopServiceImpl.deleteRecordById(1L);
+
+        verify(mockRecordShopRepository).deleteById(1L);
+    }
+
 }
