@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -55,7 +56,7 @@ public class RecordShopControllerTest {
         when(mockRecordShopServiceImpl.getAllRecords()).thenReturn(records);
 
         this.mockMvcController.perform(
-                MockMvcRequestBuilders.get("/api/v1/recordshop"))
+                MockMvcRequestBuilders.get("/api/v1/recordshop/"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("The Great Commission"))
@@ -84,6 +85,28 @@ public class RecordShopControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.format").value("DIGITAL"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.quantity").value(5))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.priceInPence").value(100));
+    }
+
+    @Test
+    public void testPostMappingAddRecord() throws Exception {
+        Record record = new Record(4L, "Chandler Moore: Live in Los Angeles", "Chandler Moore", Genre.GOSPEL, Format.DIGITAL, 5, 121);
+
+        when(mockRecordShopServiceImpl.insertRecord(record)).thenReturn(record);
+
+        this.mockMvcController.perform(
+                MockMvcRequestBuilders.post("/api/v1/recordshop/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(record)))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(4))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Chandler Moore: Live in Los Angeles"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.artist").value("Chandler Moore"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value("GOSPEL"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.format").value("DIGITAL"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.quantity").value(5))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.priceInPence").value(121));
+
+        verify(mockRecordShopServiceImpl, times(1)).insertRecord(record);
     }
 
 }

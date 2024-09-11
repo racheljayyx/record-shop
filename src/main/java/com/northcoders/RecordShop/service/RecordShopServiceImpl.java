@@ -26,4 +26,9 @@ public class RecordShopServiceImpl implements RecordShopService {
     public Optional<Record> getRecordById(Long id) {
         return recordShopRepository.findById(id);
     }
+
+    @Override
+    public Record insertRecord(Record record) {
+        return recordShopRepository.save(record);
+    }
 }

@@ -1,15 +1,12 @@
 package com.northcoders.RecordShop.controller;
 
-
 import com.northcoders.RecordShop.model.Record;
 import com.northcoders.RecordShop.service.RecordShopService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,5 +27,13 @@ public class RecordShopController {
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Record>> getEmployeeById(@PathVariable("id") long id){
         return new ResponseEntity<>(recordShopService.getRecordById(id), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Record> addRecord(@RequestBody Record record) {
+        Record newRecord = recordShopService.insertRecord(record);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("record", "/api/v1/recordshop" + newRecord.getId().toString());
+        return new ResponseEntity<>(newRecord, httpHeaders,HttpStatus.CREATED);
     }
 }
