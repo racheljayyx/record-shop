@@ -31,4 +31,9 @@ public class RecordShopServiceImpl implements RecordShopService {
     public Record insertRecord(Record record) {
         return recordShopRepository.save(record);
     }
+
+    @Override
+    public void deleteRecordById(Long id) {
+        recordShopRepository.deleteById(id);
+    }
 }
